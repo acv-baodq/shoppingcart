@@ -1,1 +1,17 @@
-<h1> Home </h1>
+<div class="product-index">
+  <div class="products-list">
+    <% @products.each do |product| %>
+      <div class="product-item">
+        <div class="img-wrapper">
+          <%= image_tag product.img_url, class: "img_fluid product-img" %>
+        </div>
+        <div class="product-title">
+          <%= product.name %>
+        </div>
+        <div class="product-price">
+          <%= product.price %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
