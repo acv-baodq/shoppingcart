@@ -19,4 +19,5 @@
 //= require loadingoverlay
 //= require toastr
 // require turbolinks
+//= require navbar
 //= require_tree .
