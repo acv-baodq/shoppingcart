@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root "products#index"
+
   resources :products
+  resources :carts
+
+  # post 'carts/:id', to: 'carts#save', as: 'carts'
+  # get 'carts', to: 'carts#show', as: 'cart'
+  # delete 'carts_delete/:id', to: 'carts#destroy', as:'cart_delete'
 end

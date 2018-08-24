@@ -9,8 +9,8 @@
           <%= image_tag product.img_url, class: "img-fluid product-img" %>
           <div class="text-overlay">
             <!-- <div class="text-cart"><a href="">Add to cart</a></div> -->
-            <a href="" class="btn btn-primary btn-cart">Add to cart</a>
-            <!-- <a href="" class="btn btn-success">View Detail</a> -->
+            <a onclick="addProductToCart(<%= product.id %>)" class="btn btn-primary btn-cart" href="javascript:void(0);">Add to cart</a>
+            <%#= link_to 'Add to cart', carts_path(product.id), method: :post, class: 'btn btn-primary btn-cart'%>
             <%= link_to 'View Detail', product_path(product), class: 'btn btn-success'%>
           </div>
         </div>

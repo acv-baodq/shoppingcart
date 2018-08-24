@@ -12,14 +12,17 @@
     </ul>
 		<ul class="navbar-nav ml-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">
+        <!-- <a data-toggle="modal" data-target="#cart-show-btn" id="add-to-cart" class="nav-link" href="#"> -->
+        <a id="cart-show-btn" class="nav-link" href="#">
           <%= fa_icon "shopping-cart" %>
-          Cart
+          <span>Cart(<%= Cart.first.products.count %>)</span>
+
         </a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="#">Sign In</a>
       </li>
+      <%= render '/layouts/cart' %>
 		</ul>
   </div>
 </nav>
