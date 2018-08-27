@@ -1,5 +1,6 @@
 function generate_list_product(data){
-  $('#cart .modal-body').empty()
+  $('#cart .modal-body').empty();
+  var total_price = 0;
   $.each(data.data, function(i, value){
     var delete_item = '<a class="delete-product" href="javascript:void(0);" id="product-' + value.id + '" onclick="confirmDelete(' + value.id + ')"' + '>Remove</a>'
     var div = '<div class="modal-content">' +
@@ -9,9 +10,9 @@ function generate_list_product(data){
                     delete_item +
               '</div>';
     $('#cart .modal-body').append(div);
-    var total_price = data.total
-    $('#cart .modal-body').append('<div> Total price: ' + total_price + '$</div>');
+    total_price = data.total
   })
+  $('#cart .modal-body').append('<div> Total price: ' + total_price + '$</div>');
 }
 
 function confirmDelete(id){
@@ -42,7 +43,6 @@ $( document ).ready(function() {
       url: "/carts/1",
       success: function(data, textStatus, jqXHR){
         generate_list_product(data);
-        console.log('test',data)
         $('#cart').modal('show');
       },
       error: function(jqXHR, textStatus, errorThrown){}

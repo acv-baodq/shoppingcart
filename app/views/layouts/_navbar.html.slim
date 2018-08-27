@@ -1,0 +1,19 @@
+nav.navbar.navbar-expand-lg.navbar-light.bg-light
+  a.navbar-brand href='= products_path'  Shopping Cart
+  button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button"
+    span.navbar-toggler-icon
+  #navbarSupportedContent.collapse.navbar-collapse
+    ul.navbar-nav.mr-auto
+      li.nav-item.active
+        a.nav-link href='#'
+          | Home
+          span.sr-only (current)
+    ul.navbar-nav.ml-auto
+      li.nav-item.active
+        /! <a data-toggle="modal" data-target="#cart-show-btn" id="add-to-cart" class="nav-link" href="#"
+        a#cart-show-btn.nav-link href="#"
+          = fa_icon "shopping-cart"
+          /span Cart = Cart.first.products.count
+      li.nav-item.active
+        a.nav-link href="#"  Sign In
+      = render '/layouts/cart'
