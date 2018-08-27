@@ -1,0 +1,27 @@
+#product-show
+  #item-wrapper
+    .row
+      .col-md-4
+        #img-item-wrapper
+          = image_tag @product.img_url, class: "img-fluid item-img"
+      .col-md-8
+        #item-detail
+          .item-name
+            = @product.name
+          hr/
+          .item-category
+            | Category: #{@product.category.try(:name)}
+          hr/
+          .item-price
+            = @product.price
+            | $
+          hr/
+          .item-desciption
+            = @product.description
+          hr/
+          .add-to-cart
+            /!
+              | <div class="quantity"
+              | Quantity
+              | </div
+            button.btn.btn-lg.btn-danger Buy item
