@@ -1,18 +1,8 @@
+= session[:user_id].inspect
+
 #product-index
   .my-paginate
     = paginate @products, class: 'pagination'
   .products-list
-    - @products.each do |product|
-      .product-item.text-center
-        .img-wrapper
-          = image_tag product.img_url, class: "img-fluid product-img"
-          .text-overlay
-            /! <div class="text-cart"><a href="">Add to cart</a></div
-            a.btn.btn-primary.btn-cart href="javascript:void(0);" onclick="addProductToCart(#{product.id})"  Add to cart
-            = link_to 'View Detail', product_path(product), class: 'btn btn-success'
-        .product-title
-          = product.name
-        .product-price
-          = product.price
-          | $
-  br.clearBoth/
+    = render partial: 'product', collection: @products
+  br.clearBoth

@@ -15,7 +15,7 @@
 //= require popper
 //= require bootstrap-sprockets
 //= require activestorage
-//= require navbar
+//= require cart
 //= require loadingoverlay
 //= require toastr
 // require turbolinks
