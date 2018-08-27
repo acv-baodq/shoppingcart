@@ -16,4 +16,7 @@
 //= require bootstrap-sprockets
 //= require activestorage
 //= require navbar
+//= require loadingoverlay
+//= require toastr
+// require turbolinks
 //= require_tree .

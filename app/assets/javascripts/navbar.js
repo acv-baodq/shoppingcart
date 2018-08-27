@@ -16,27 +16,36 @@ function generate_list_product(data){
 }
 
 function confirmDelete(id){
+  $.LoadingOverlay("show");
   confirm('Are you sure?')
   $.ajax({
     type: "DELETE",
     url: "/carts/" + id,
     success: function(data, textStatus, jqXHR){
+      $.LoadingOverlay("hide");
       generate_list_product(data);
+      toastr.success(data.messages)
+
     },
     error: function(jqXHR, textStatus, errorThrown){}
   })
 }
 function addProductToCart(id){
+  $.LoadingOverlay("show");
   $.ajax({
     type: "PUT",
     url: "/carts/" + id,
     success: function(data, textStatus, jqXHR){
       generate_list_product(data);
+      $.LoadingOverlay("hide");
+      toastr.success(data.messages)
     },
     error: function(jqXHR, textStatus, errorThrown){}
   })
 }
 $( document ).ready(function() {
+  // $( document ).on('turbolinks:load', function() {
+  //need to fix turbolink
   $("#cart-show-btn").on('click', function(){
     $.ajax({
       type: "GET",
@@ -47,7 +56,5 @@ $( document ).ready(function() {
       },
       error: function(jqXHR, textStatus, errorThrown){}
     })
-  });
-  $(".btn-cart").on('click', function(){
   });
 });

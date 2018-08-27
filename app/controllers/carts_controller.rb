@@ -1,22 +1,33 @@
 class CartsController < ApplicationController
   skip_before_action :verify_authenticity_token
+  before_action :guest_user # test for guest user, add devise later
 
   def update
-    @cart = Cart.first
     product = Product.find(params[:id].to_i)
-    product.cart_id = @cart.id
-    product.save
-    render :json => @cart.products
+    @cart.products << product
+    render :json => {data: @cart.products, total: @cart.get_total, messages: "Added #{product.name} success" }
   end
 
   def show
-    @cart = Cart.first.products
-    render :json => { data: @cart, total: Cart.get_total }
+    data = @cart.products.empty? ? [] : @cart.products
+    render :json => { data: data, total: @cart.get_total }
   end
 
   def destroy
-    @cart = Cart.first
-    @cart.products.delete(Product.find(params[:id]))
-    render :json => @cart.products
+    product = Product.find(params[:id].to_i)
+    @cart.products.delete(product)
+    render :json => {data: @cart.products, total: @cart.get_total, messages: "Delete #{product.name} success" }
   end
+
+  private
+    def guest_user
+      id = session[:cart_id]
+      if id.nil?
+        @cart = Cart.create
+        session[:cart_id] = @cart.id
+        id = @cart.id
+      else
+        @cart = Cart.find(id)
+      end
+    end
 end
