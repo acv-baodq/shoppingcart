@@ -10,12 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_23_041153) do
+ActiveRecord::Schema.define(version: 2018_08_27_081001) do
+
+  create_table "cart_products", force: :cascade do |t|
+    t.integer "product_id"
+    t.integer "cart_id"
+    t.index ["cart_id"], name: "index_cart_products_on_cart_id"
+    t.index ["product_id"], name: "index_cart_products_on_product_id"
+  end
 
   create_table "carts", force: :cascade do |t|
     t.decimal "total_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uuid"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -31,10 +39,24 @@ ActiveRecord::Schema.define(version: 2018_08_23_041153) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "category_id"
-    t.integer "cart_id"
     t.string "img_url"
-    t.index ["cart_id"], name: "index_products_on_cart_id"
     t.index ["category_id"], name: "index_products_on_category_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "address"
+    t.string "phone"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
 end
