@@ -21,6 +21,8 @@ class CartsController < ApplicationController
 
   private
     def guest_user
-      @cart = Cart.find_or_create_by(id: session[:cart_id])
+      id = session[:cart_id]
+      @cart = Cart.find_or_create_by(id: id)
+      session[:cart_id] = @cart.id if id.nil?
     end
 end
