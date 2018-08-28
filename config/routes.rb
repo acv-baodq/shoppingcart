@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :products
 
   post 'carts/:id', to: 'carts#add'
+  post 'carts_quatity', to: 'carts#change_quatity'
   get 'carts', to: 'carts#show'
   delete 'carts_delete/:id', to: 'carts#destroy', as:'cart_delete'
 end

@@ -4,7 +4,7 @@ function generate_list_product(obj){
   $.each(obj.data, function(i, value){
     total_price += value.quatity * value.price
 
-    var quality_form = '<input class="form-control" type="text" />';
+    var quality_form = '<input value=' + value.quatity + ' id="quatity-' + value.id + '" class="form-control" type="number" />';
     var delete_item = '<a class="delete-product" href="javascript:void(0);" id="product-' + value.id + '" onclick="confirmDelete(' + value.id + ')"' + '>Remove All</a>'
 
     var div = '<div class="col-md-12">' +
@@ -54,6 +54,8 @@ function addProductToCart(id){
     error: function(jqXHR, textStatus, errorThrown){}
   })
 }
+
+
 $( document ).ready(function() {
   // $( document ).on('turbolinks:load', function() {
   //need to fix turbolink
@@ -68,4 +70,26 @@ $( document ).ready(function() {
       error: function(jqXHR, textStatus, errorThrown){}
     })
   });
+
+  $(".change-quatity").on('click', function change_quatity(){
+    $.LoadingOverlay("show");
+    var inputQuatity = $("input[id^='quatity-']");
+    var data = {};
+    $.each(inputQuatity, function(key, val) {
+      var id = val.id.match(/\d/g);
+      id = id.join("");
+      data[id] = parseInt(val.value) > 0 ? parseInt(val.value) : 0;
+    })
+    $.ajax({
+      type: "POST",
+      url: "/carts_quatity",
+      data: {data: data},
+      success: function(data, textStatus, jqXHR){
+        generate_list_product(data);
+        $.LoadingOverlay("hide");
+        toastr.success(data.messages)
+      },
+      error: function(jqXHR, textStatus, errorThrown){}
+    })
+  })
 });

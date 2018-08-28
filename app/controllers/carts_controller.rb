@@ -30,6 +30,18 @@ class CartsController < ApplicationController
     render :json => {data: @cart.data, messages: "Delete #{product.name} success" } if @cart.save
   end
 
+  def change_quatity
+    data = params[:data]
+    data.each do |key, val|
+      if val == "0"
+        @cart.data.delete(key)
+        next
+      end
+      @cart.data[key]['quatity'] = val
+    end
+    render :json => {data: @cart.data, messages: "Saved all changes" } if @cart.save
+  end
+
   private
     def guest_user
       id = session[:cart_id]
