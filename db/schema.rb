@@ -10,20 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_27_061317) do
-
-  create_table "cart_products", force: :cascade do |t|
-    t.integer "product_id"
-    t.integer "cart_id"
-    t.index ["cart_id"], name: "index_cart_products_on_cart_id"
-    t.index ["product_id"], name: "index_cart_products_on_product_id"
-  end
+ActiveRecord::Schema.define(version: 2018_08_28_042523) do
 
   create_table "carts", force: :cascade do |t|
-    t.decimal "total_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "uuid"
+    t.integer "user_id"
+    t.json "data", default: {}
   end
 
   create_table "categories", force: :cascade do |t|
