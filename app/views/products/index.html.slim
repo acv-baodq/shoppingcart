@@ -1,0 +1,8 @@
+= session[:user_id].inspect
+
+#product-index
+  .my-paginate
+    = paginate @products, class: 'pagination'
+  .products-list
+    = render partial: 'product', collection: @products
+  br.clearBoth
