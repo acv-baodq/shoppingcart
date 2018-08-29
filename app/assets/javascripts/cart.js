@@ -1,7 +1,7 @@
 function generate_list_product(obj){
   $('#cart .modal-body #cart-content').empty();
   var total_price = 0;
-  $.each(obj.data, function(i, value){
+  $.each(obj, function(i, value){
     total_price += value.quatity * value.price
 
     var quality_form = '<input value=' + value.quatity + ' id="quatity-' + value.id + '" class="form-control" type="number" />';
@@ -31,10 +31,10 @@ function confirmDelete(id){
   $.ajax({
     type: "DELETE",
     url: "/carts_delete/" + id,
-    success: function(data, textStatus, jqXHR){
+    success: function(res, textStatus, jqXHR){
       $.LoadingOverlay("hide");
-      generate_list_product(data);
-      toastr.success(data.messages)
+      generate_list_product(res.data);
+      toastr.success(res.messages)
 
     },
     error: function(jqXHR, textStatus, errorThrown){}
@@ -46,10 +46,10 @@ function addProductToCart(id){
   $.ajax({
     type: "POST",
     url: "/carts/" + id,
-    success: function(data, textStatus, jqXHR){
-      generate_list_product(data);
+    success: function(res, textStatus, jqXHR){
+      generate_list_product(res.data);
       $.LoadingOverlay("hide");
-      toastr.success(data.messages)
+      toastr.success(res.messages)
     },
     error: function(jqXHR, textStatus, errorThrown){}
   })
@@ -63,8 +63,8 @@ $( document ).ready(function() {
     $.ajax({
       type: "GET",
       url: "/carts",
-      success: function(data, textStatus, jqXHR){
-        generate_list_product(data);
+      success: function(res, textStatus, jqXHR){
+        generate_list_product(res.data);
         $('#cart').modal('show');
       },
       error: function(jqXHR, textStatus, errorThrown){}
@@ -84,10 +84,10 @@ $( document ).ready(function() {
       type: "POST",
       url: "/carts_quatity",
       data: {data: data},
-      success: function(data, textStatus, jqXHR){
-        generate_list_product(data);
+      success: function(res, textStatus, jqXHR){
+        generate_list_product(res.data);
         $.LoadingOverlay("hide");
-        toastr.success(data.messages)
+        toastr.success(res.messages)
       },
       error: function(jqXHR, textStatus, errorThrown){}
     })

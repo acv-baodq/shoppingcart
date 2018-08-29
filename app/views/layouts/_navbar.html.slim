@@ -1,5 +1,5 @@
 nav.navbar.navbar-expand-lg.navbar-light.bg-light
-  a.navbar-brand href='= products_path'  Shopping Cart
+  a.navbar-brand href=root_path  Shopping Cart
   button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button"
     span.navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
@@ -15,5 +15,13 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
           = fa_icon "shopping-cart"
           /span Cart = Cart.first.products.count
       li.nav-item.active
-        a.nav-link href="#"  Sign In
+        - if current_user
+          .dropdown
+            button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+              = current_user.email
+            .dropdown-menu aria-labelledby="dropdownMenuButton"
+              = link_to 'Edit profile', edit_user_registration_path, class: 'dropdown-item'
+              = link_to 'Log out', destroy_user_session_path, class: 'dropdown-item', method: :delete
+        - else
+          = link_to 'Sign Up', new_user_session_path, class: 'dropdown-item'
       = render '/layouts/cart'
