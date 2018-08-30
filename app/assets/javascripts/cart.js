@@ -1,40 +1,54 @@
-function generate_list_product(obj){
-  $('#cart .modal-body #cart-content').empty();
-  var total_price = 0;
-  $.each(obj, function(i, value){
-    total_price += value.quatity * value.price
-
-    var quality_form = '<input value=' + value.quatity + ' id="quatity-' + value.id + '" class="form-control" type="number" />';
-    var delete_item = '<a class="delete-product" href="javascript:void(0);" id="product-' + value.id + '" onclick="confirmDelete(' + value.id + ')"' + '>Remove All</a>'
-
-    var div = '<div class="col-md-12">' +
-                '<div class="row">' +
-                  '<div class="col-md-8 modal-cart-content">' +
-                    '<img class="image-product-modal" src="' + value.img_url + '" />' +
-                    '<div class="name-product-modal"><a href="/products/' + value.id + '">' + value.name + '</a> x ' + value.quatity + '</div>' +
-                    '<div class="price-product-modal">' + value.price + '$</div>' +
-                  '</div>' +
-                  '<div class="col-md-4 modal-cart-quality">' +
-                     quality_form + delete_item
-                  '</div>' +
+function createHtmlForCart(value){
+  return '<div class="col-md-12" id="cart-item-' + value.id + '">' +
+              '<div class="row">' +
+                '<div class="col-md-8 modal-cart-content">' +
+                  '<img class="image-product-modal" src="' + value.img_url + '" />' +
+                  '<div class="name-product-modal"><a href="/products/' + value.id + '">' + value.name + '</a></div>' +
+                  '<div class="price-product-modal">' + value.price + '$</div>' +
+                '</div>' +
+                '<div class="col-md-4 modal-cart-quality">' +
+                  '<input value=' + value.quatity + ' id="quatity-' + value.id + '" class="form-control" type="number" />' +
+                  '<a class="delete-product" href="javascript:void(0);" id="product-' + value.id + '" onclick="confirmDelete(' + value.id + ')"' + '>Remove All</a>' +
                 '</div>' +
               '</div>' +
-              '<div class="clearfix"></div>';
-    $('#cart .modal-body #cart-content').append(div);
+            '</div>' +
+            '<div class="clearfix"></div>';
+}
+
+function cartCount(){
+  var quatity = 0;
+  $.each($("input[id^='quatity-']"), function(key, val){
+    quatity += parseInt(val.value)
   })
-  $('#cart .modal-body #cart-content').append('<div> Total price: ' + total_price + '$</div>');
+  $('#cart-count').text('(' + quatity + ')');
+}
+
+function generate_list_product(data){
+  if(typeof data.data === 'object'){
+    $('#cart .modal-body #cart-content').empty();
+    var total_price = 0;
+    $.each(data.data, function(i, value){
+      total_price += value.quatity * value.price
+      $('#cart .modal-body #cart-content').append(createHtmlForCart(value));
+    })
+  } else {
+    $('#cart .modal-body #cart-content').append(createHtmlForCart(data));
+  }
+  cartCount();
+  // $('#cart .modal-body #cart-content').append('<div> Total price: ' + total_price + '$</div>');
 }
 
 function confirmDelete(id){
+  confirm('Are you sure?');
   $.LoadingOverlay("show");
-  confirm('Are you sure?')
   $.ajax({
     type: "DELETE",
     url: "/carts_delete/" + id,
     success: function(res, textStatus, jqXHR){
+      $('#cart-item-' + id).remove();
+      cartCount();
       $.LoadingOverlay("hide");
-      generate_list_product(res.data);
-      toastr.success(res.messages)
+      toastr.success(res.messages);
 
     },
     error: function(jqXHR, textStatus, errorThrown){}
@@ -47,6 +61,7 @@ function addProductToCart(id){
     type: "POST",
     url: "/carts/" + id,
     success: function(res, textStatus, jqXHR){
+      $('#cart-item-' + id).remove();
       generate_list_product(res.data);
       $.LoadingOverlay("hide");
       toastr.success(res.messages)
@@ -55,20 +70,32 @@ function addProductToCart(id){
   })
 }
 
+function cartInit(){
+  $.ajax({
+    type: "GET",
+    url: "/cart_init",
+    success: function(res, textStatus, jqXHR){
+      generate_list_product(res.data);
+    },
+    error: function(jqXHR, textStatus, errorThrown){}
+  })
+}
 
 $( document ).ready(function() {
   // $( document ).on('turbolinks:load', function() {
   //need to fix turbolink
+  cartInit();
   $("#cart-show-btn").on('click', function(){
-    $.ajax({
-      type: "GET",
-      url: "/carts",
-      success: function(res, textStatus, jqXHR){
-        generate_list_product(res.data);
-        $('#cart').modal('show');
-      },
-      error: function(jqXHR, textStatus, errorThrown){}
-    })
+    // $.ajax({
+    //   type: "GET",
+    //   url: "/carts",
+    //   success: function(res, textStatus, jqXHR){
+    //     generate_list_product(res.data);
+    //     $('#cart').modal('show');
+    //   },
+    //   error: function(jqXHR, textStatus, errorThrown){}
+    // })
+    $('#cart').modal('show');
   });
 
   $(".change-quatity").on('click', function change_quatity(){
@@ -85,7 +112,7 @@ $( document ).ready(function() {
       url: "/carts_quatity",
       data: {data: data},
       success: function(res, textStatus, jqXHR){
-        generate_list_product(res.data);
+        cartCount();
         $.LoadingOverlay("hide");
         toastr.success(res.messages)
       },

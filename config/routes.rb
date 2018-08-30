@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :products
 
+  get 'cart_init', to: 'carts#init_data'
   post 'carts/:id', to: 'carts#add'
   post 'carts_quatity', to: 'carts#change_quatity'
   get 'carts', to: 'carts#show'

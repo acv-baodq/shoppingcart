@@ -2,7 +2,6 @@
   .img-wrapper
     = image_tag product.img_url, class: "img-fluid product-img"
     .text-overlay
-      /! <div class="text-cart"><a href="">Add to cart</a></div
       a.btn.btn-primary.btn-cart href="javascript:void(0);" onclick="addProductToCart(#{product.id})"  Add to cart
       = link_to 'View Detail', product_path(product), class: 'btn btn-success'
   .product-title
