@@ -9,15 +9,15 @@ class CartsController < ApplicationController
       @cart['data'][product.id.to_s]['quatity'] = (@cart['data'][product.id.to_s]['quatity'].to_i + 1).to_s
       return render :json => {data: @cart['data'], messages: "Added #{product.name} x#{@cart['data'][product.id.to_s]['quatity']}" }
     else
-      @data_build = {
+      data_build = {
         'id': product.id.to_s,
         'name': product.name.to_s,
         'price': product.price.to_s,
         'img_url': product.img_url.to_s
       }
-      @data_build['quatity'] = '1'
+      data_build['quatity'] = '1'
     end
-    @cart['data'][product.id.to_s] = @data_build
+    @cart['data'][product.id.to_s] = data_build
     render :json => {data: @cart, messages: "Added #{product.name} success" }
   end
 
