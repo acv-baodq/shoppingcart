@@ -28,14 +28,12 @@ function generate_list_product(data){
     $('#cart .modal-body #cart-content').empty();
     var total_price = 0;
     $.each(data.data, function(i, value){
-      total_price += value.quatity * value.price
       $('#cart .modal-body #cart-content').append(createHtmlForCart(value));
     })
   } else {
     $('#cart .modal-body #cart-content').append(createHtmlForCart(data));
   }
   cartCount();
-  // $('#cart .modal-body #cart-content').append('<div> Total price: ' + total_price + '$</div>');
 }
 
 function confirmDelete(id){
@@ -86,15 +84,6 @@ $( document ).ready(function() {
   //need to fix turbolink
   cartInit();
   $("#cart-show-btn").on('click', function(){
-    // $.ajax({
-    //   type: "GET",
-    //   url: "/carts",
-    //   success: function(res, textStatus, jqXHR){
-    //     generate_list_product(res.data);
-    //     $('#cart').modal('show');
-    //   },
-    //   error: function(jqXHR, textStatus, errorThrown){}
-    // })
     $('#cart').modal('show');
   });
 

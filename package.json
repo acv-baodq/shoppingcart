@@ -1,7 +1,0 @@
-{
-  "name": "shoppingcart",
-  "private": true,
-  "dependencies": {
-    "yarn": "^1.9.4"
-  }
-}

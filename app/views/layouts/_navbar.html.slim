@@ -4,10 +4,10 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
     span.navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
     ul.navbar-nav.mr-auto
-      li.nav-item.active
-        a.nav-link href='#'
-          | Home
-          span.sr-only (current)
+      li class=("nav-item #{'active' if params[:controller] == 'categories'}")
+        = link_to 'Category', categories_path, class: 'nav-link'
+      li class=("nav-item #{'active' if params[:controller] == 'products'}")
+        = link_to 'Product', products_path, class: 'nav-link'
     ul.navbar-nav.ml-auto
       li.nav-item.active
         /! <a data-toggle="modal" data-target="#cart-show-btn" id="add-to-cart" class="nav-link" href="#"

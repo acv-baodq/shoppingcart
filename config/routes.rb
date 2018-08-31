@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { registrations: 'registrations' }
   root "products#index"
 
+  resources :categories
   resources :products
 
   get 'cart_init', to: 'carts#init_data'

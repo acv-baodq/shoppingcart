@@ -47,15 +47,14 @@ class CartsController < ApplicationController
       if current_user
         @cart = Cart.find_or_create_by(user_id: current_user.id)
         if session[:cart].present?
-          # @cart.data = @cart.data.merge(session[:cart]['data'])
-          # @cart.save
           session[:cart]['data'].each_key do |key|
             if @cart.data.has_key? key
               @cart.data[key]['quatity'] = (@cart.data[key]['quatity'].to_i + session[:cart]['data'][key]['quatity'].to_i).to_s
             else
-              @cart.data[key] = session[:cart][key]
+              @cart.data[key] = session[:cart]['data'][key]
             end
           end
+          @cart.save
           session[:cart] = nil
         end
         return
