@@ -5,11 +5,11 @@
         h5#exampleModalLongTitle.modal-title.text-center Cart
         button.close aria-label="Close" data-dismiss="modal" type="button"
           span aria-hidden="true"  &times;
-      .modal-body
+      .modal-body data-behavior='cart' data-cart='[]'
         .container-fluid
           .row
             #cart-content
       .modal-footer
         button.btn.btn-info.change-quatity type="button" Save Changes
         button.btn.btn-secondary data-dismiss="modal" type="button"  Close
-        button.btn.btn-primary type="button"  Check Out
+        = link_to 'Check Out', '/checkout', class: 'btn btn-primary'

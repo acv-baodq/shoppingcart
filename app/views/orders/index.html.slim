@@ -1,0 +1,35 @@
+#checkout-page
+  .row
+    .col-md-6
+      h3.text-center Cart Detail
+      #order-detail
+        table.table
+          thead
+            tr
+              th  Id
+              th  Products
+              th  Quatity
+              th.co-price  Price
+          tbody
+        .co-total-price.text-center
+      button.btn.btn-info.btn-lg.btn-block COD Checkout
+      button.btn.btn-primary.btn-lg.btn-block Paypal
+      button.btn.btn-success.btn-lg.btn-block Google Checkout
+    .col-md-6
+      h3.text-center Choose your address
+      .form-group
+        label for="name" Name
+        input value = current_user.full_name type="text" class="form-control" id="full-name" placeholder="Full Name"
+      .form-group
+        label for="phone" Phone
+        input value = current_user.phone type="text" class="form-control" id="phone" placeholder="Phone Number"
+      .form-group
+        label for="sel1" Select list:
+        select#address.form-control onchange="addressSelect()"
+          - current_user.address.each do |add|
+            option=add.locate
+          option Choose new address
+      #shipping style=("height:100%; width:100%;")
+        input#pac-input.controls.form-control placeholder=("Search") type="text" /
+        #map
+#paypal-button
