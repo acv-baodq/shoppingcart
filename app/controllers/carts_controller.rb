@@ -3,11 +3,11 @@ class CartsController < ApplicationController
   before_action :guest_user # test for guest user, add devise later
   after_action :save_to_current_user, except: [:show]
 
-  def init_data
+  def index
     render json: {data: @cart}
   end
 
-  def add
+  def update
     product = Product.find(params[:id].to_i)
     if(@cart['data'].key? product.id.to_s)
       @cart['data'][product.id.to_s]['quatity'] = (@cart['data'][product.id.to_s]['quatity'].to_i + 1).to_s
@@ -30,8 +30,8 @@ class CartsController < ApplicationController
     render json: { messages: "Delete #{product.name} success" }
   end
 
-  def change_quatity
-    data = params[:data]
+  def create
+    data = params[:data].present? ? params[:data] : {}
     data.each do |key, val|
       if val == '0'
         @cart['data'].delete(key)

@@ -4,10 +4,11 @@ Rails.application.routes.draw do
 
   resources :categories
   resources :products
+  resources :carts
 
-  get 'cart_init', to: 'carts#init_data'
-  post 'carts/:id', to: 'carts#add'
-  post 'carts_quatity', to: 'carts#change_quatity'
-  get 'carts', to: 'carts#show'
-  delete 'carts_delete/:id', to: 'carts#destroy', as:'cart_delete'
+  # get 'cart_init', to: 'carts#init_data'
+  # post 'carts/:id', to: 'carts#add'
+  # post 'carts_quatity', to: 'carts#change_quatity'
+  # get 'carts', to: 'carts#show'
+  # delete 'carts_delete/:id', to: 'carts#destroy', as:'cart_delete'
 end

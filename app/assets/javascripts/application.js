@@ -15,7 +15,7 @@
 //= require popper
 //= require bootstrap-sprockets
 //= require activestorage
-//= require loadingoverlay
-//= require toastr
-//= require cart
+//= require cart_helper.coffee
+//= require product.coffee
+//= require cart.coffee
 //= require_tree .
