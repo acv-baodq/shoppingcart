@@ -22,13 +22,9 @@
   return
 
 @generate_list_product = (data) ->
-  if typeof data.data == 'object'
-    $('#cart .modal-body #cart-content').empty()
-    total_price = 0
-    $.each data.data, (i, value) ->
-      $('#cart .modal-body #cart-content').append createHtmlForCart(value)
-      return
-  else
-    $('#cart .modal-body #cart-content').append createHtmlForCart(data)
+  total_price = 0
+  $.each data, (i, value) ->
+    $('#cart .modal-body #cart-content').append createHtmlForCart(value)
+    return
   cartCount()
   return

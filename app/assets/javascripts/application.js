@@ -16,6 +16,5 @@
 //= require bootstrap-sprockets
 //= require activestorage
 //= require cart_helper.coffee
-//= require product.coffee
 //= require cart.coffee
 //= require_tree .

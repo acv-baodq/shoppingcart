@@ -81,8 +81,8 @@ class Payment
       url: '/carts'
       success: (res, textStatus, jqXHR) ->
         total_price = 0
-        $('.modal-content').data('cart', res.data.data)
-        $.each res.data.data, (i, value) ->
+        $('.modal-content').data('cart', res.data)
+        $.each res.data, (i, value) ->
           $('#order-detail .table tbody ').append createTableRow(value)
           total_price += parseFloat(parseFloat(value.price))
           return
@@ -105,5 +105,3 @@ $(document).ready ->
     collectProduct()
     return
   ), 3000
-
-  #render data

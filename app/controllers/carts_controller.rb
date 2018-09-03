@@ -3,7 +3,7 @@ class CartsController < ApplicationController
   after_action :save_to_current_user, except: [:show]
 
   def index
-    render json: {data: @cart}
+    render json: {data: @cart['data']}
   end
 
   def update

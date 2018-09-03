@@ -1,3 +1,30 @@
+class Product
+  constructor: (product) ->
+    @product = $(product)
+    @id = @product.data('id')
+    @addToCart()
+
+  addToCart: ->
+    @product.find('.btn-cart').on 'click', @handleAddToCart
+
+  handleAddToCart: =>
+    $.LoadingOverlay 'show'
+    $("#cart-item-#{@id}").remove()
+    id = @id
+    $.ajax
+      type: 'PUT'
+      url: "/carts/#{@id}"
+      success: (res, textStatus, jqXHR) ->
+        data =
+          "#{id}": res.data
+        generate_list_product data
+        cart = new Cart($('.cart-items').last())
+        $.LoadingOverlay 'hide'
+        toastr.success res.messages
+        return
+      error: (jqXHR, textStatus, errorThrown) ->
+    return
+
 class CartList
   constructor: (cartList) ->
     @cartList = $(cartList)
@@ -15,6 +42,7 @@ class CartList
       id = val.id.match(/\d/g)
       id = id.join('')
       data[id] = if parseInt(val.value) > 0 then parseInt(val.value) else 0
+      $("#cart-item-#{id}").remove() if data[id] == 0
     $.ajax
       type: 'POST'
       url: '/carts'
@@ -35,7 +63,6 @@ class CartList
 
   handleInitDataSuccess: (res) =>
     generate_list_product res.data
-    @cartList.data('cart', res.data.data)
     carts = $.map $('.cart-items'), (cart, i) ->
       new Cart(cart)
 
@@ -66,6 +93,8 @@ jQuery ->
   if !($('.products').length > 0)
     return
 
+  products = $.map $('.product-item'), (product, i) ->
+    new Product(product)
   cartList = new CartList($('.modal-content'))
 
   $('#cart-show-btn').on 'click', ->
