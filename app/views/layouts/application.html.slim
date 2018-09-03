@@ -7,11 +7,12 @@ html
 
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    script src="https://www.paypalobjects.com/api/checkout.js"
   body class = controller_name
     #main
       #topbar
         = render '/layouts/navbar'
-        div
-          .container
-            = yield
-    script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChXOp6rm7qC71-ulNGOUEo8k-0k90LmgQ&libraries=places&callback=initAutocomplete" 
+      div
+        .container
+          = yield
+    script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChXOp6rm7qC71-ulNGOUEo8k-0k90LmgQ&libraries=places&callback=initAutocomplete"

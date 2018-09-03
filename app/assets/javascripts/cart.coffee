@@ -2,16 +2,16 @@ class CartList
   constructor: (cartList) ->
     @cartList = $(cartList)
     @initData()
-    @updateQuatityEvent()
+    @updatequantityEvent()
 
-  updateQuatityEvent: ->
-    @cartList.find('.change-quatity').on 'click', @getQuatityEvent
+  updatequantityEvent: ->
+    @cartList.find('.change-quantity').on 'click', @getquantityEvent
 
-  getQuatityEvent: ->
+  getquantityEvent: ->
     $.LoadingOverlay 'show'
-    inputQuatity = $('input[id^=\'quatity-\']')
+    inputquantity = $('input[id^=\'quantity-\']')
     data = {}
-    $.each inputQuatity, (key, val) ->
+    $.each inputquantity, (key, val) ->
       id = val.id.match(/\d/g)
       id = id.join('')
       data[id] = if parseInt(val.value) > 0 then parseInt(val.value) else 0
@@ -33,8 +33,9 @@ class CartList
       url: '/carts'
       success: @handleInitDataSuccess
 
-  handleInitDataSuccess: (res) ->
+  handleInitDataSuccess: (res) =>
     generate_list_product res.data
+    @cartList.data('cart', res.data.data)
     carts = $.map $('.cart-items'), (cart, i) ->
       new Cart(cart)
 
@@ -62,6 +63,9 @@ class Cart
 
 jQuery ->
   # Init cart and create Class instance
+  if !($('.products').length > 0)
+    return
+
   cartList = new CartList($('.modal-content'))
 
   $('#cart-show-btn').on 'click', ->

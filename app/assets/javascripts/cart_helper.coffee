@@ -6,7 +6,7 @@
         '<div class="name-product-modal"><a href="/products/' + value.id + '">' + value.name + '</a></div>' +
         '<div class="price-product-modal">' + value.price + '$</div>' + '</div>' +
       '<div class="col-md-4 modal-cart-quality">' +
-        '<input value=' + value.quatity + ' id="quatity-' + value.id + '" class="form-control" type="number" />' +
+        '<input value=' + value.quantity + ' id="quantity-' + value.id + '" class="form-control" type="number" />' +
         '<a class="delete-product" href="javascript:void(0);" id="product-' + value.id + '">Remove All</a>' +
       '</div>' +
     '</div>' +
@@ -14,11 +14,11 @@
   '<div class="clearfix"></div>'
 
 @cartCount = ->
-  quatity = 0
-  $.each $('input[id^=\'quatity-\']'), (key, val) ->
-    quatity += parseInt(val.value)
+  quantity = 0
+  $.each $('input[id^=\'quantity-\']'), (key, val) ->
+    quantity += parseInt(val.value)
     return
-  $('#cart-count').text '(' + quatity + ')'
+  $('#cart-count').text '(' + quantity + ')'
   return
 
 @generate_list_product = (data) ->

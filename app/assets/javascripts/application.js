@@ -18,8 +18,4 @@
 //= require cart_helper.coffee
 //= require product.coffee
 //= require cart.coffee
-//= require loadingoverlay
-//= require toastr
-//= require googlemap
-//= require checkout
 //= require_tree .

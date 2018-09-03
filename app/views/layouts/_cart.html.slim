@@ -1,6 +1,6 @@
 #cart.modal.fade aria-hidden="true" aria-labelledby="exampleModalCenterTitle" role="dialog" tabindex="-1"
   .modal-dialog.modal-dialog-centered role="document"
-    .modal-content
+    .modal-content data-cart="{}"
       .modal-header
         h5#exampleModalLongTitle.modal-title.text-center Cart
         button.close aria-label="Close" data-dismiss="modal" type="button"
@@ -10,6 +10,6 @@
           .row
             #cart-content
       .modal-footer
-        button.btn.btn-info.change-quatity type="button" Save Changes
+        button.btn.btn-info.change-quantity type="button" Save Changes
         button.btn.btn-secondary data-dismiss="modal" type="button"  Close
-        = link_to 'Check Out', '/checkout', class: 'btn btn-primary'
+        = link_to 'Check Out', orders_path, class: 'btn btn-primary'
