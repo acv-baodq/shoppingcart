@@ -12,8 +12,11 @@
 
 ActiveRecord::Schema.define(version: 2018_09_01_115052) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "addresses", force: :cascade do |t|
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "locate"
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
@@ -37,7 +40,7 @@ ActiveRecord::Schema.define(version: 2018_09_01_115052) do
     t.decimal "price", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "category_id"
+    t.bigint "category_id"
     t.string "img_url"
     t.index ["category_id"], name: "index_products_on_category_id"
   end
