@@ -1,5 +1,5 @@
 #product-show
-  #item-wrapper
+  #item-wrapper.product-item data-id=@product.id
     .row
       .col-md-4
         #img-item-wrapper
@@ -20,5 +20,6 @@
             = @product.description
           hr/
           .add-to-cart
-            <input id="quatity-<%= @product.id %>" class="form-control" type="number" value="<%= @product.quatity %>"
-          button.btn.btn-lg.btn-danger Buy item
+            .row
+              .col-md-6
+                a.btn.btn-danger.btn-cart href="javascript:void(0);" data-id=@product.id  Add to cart
