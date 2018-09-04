@@ -84,7 +84,7 @@ class Payment
         $('.modal-content').data('cart', res.data)
         $.each res.data, (i, value) ->
           $('#order-detail .table tbody ').append createTableRow(value)
-          total_price += parseFloat(parseFloat(value.price))
+          total_price += parseFloat(parseFloat(value.price)) * parseInt(value.quantity)
           return
         $('.co-total-price').html '<span>Total: $<strong>' + total_price.toFixed(2) + '</strong></span>'
         $.LoadingOverlay 'hide'
