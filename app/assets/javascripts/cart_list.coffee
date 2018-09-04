@@ -1,4 +1,4 @@
-class CartList
+class @CartList
   constructor: (cartList) ->
     @cartList = $(cartList)
     @initData()
@@ -38,10 +38,3 @@ class CartList
     generate_list_product res.data
     carts = $.map $('.cart-items'), (cart, i) ->
       new Cart(cart)
-
-jQuery ->
-  # Init cart and create Class instance
-  if !($('.products').length > 0)
-    return
-
-  cartList = new CartList($('.modal-content'))

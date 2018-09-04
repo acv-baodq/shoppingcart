@@ -19,11 +19,3 @@ class @Cart
     cartCount()
     $.LoadingOverlay 'hide'
     toastr.success res.messages
-
-jQuery ->
-  # Init cart and create Class instance
-  if !($('.products').length > 0)
-    return
-
-  $('#cart-show-btn').on 'click', ->
-    $('#cart').modal 'show'
