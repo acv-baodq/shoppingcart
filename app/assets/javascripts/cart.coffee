@@ -1,30 +1,3 @@
-class Product
-  constructor: (product) ->
-    @product = $(product)
-    @id = @product.data('id')
-    @addToCart()
-
-  addToCart: ->
-    @product.find('.btn-cart').on 'click', @handleAddToCart
-
-  handleAddToCart: =>
-    $.LoadingOverlay 'show'
-    $("#cart-item-#{@id}").remove()
-    id = @id
-    $.ajax
-      type: 'PUT'
-      url: "/carts/#{@id}"
-      success: (res, textStatus, jqXHR) ->
-        data =
-          "#{id}": res.data
-        generate_list_product data
-        cart = new Cart($('.cart-items').last())
-        $.LoadingOverlay 'hide'
-        toastr.success res.messages
-        return
-      error: (jqXHR, textStatus, errorThrown) ->
-    return
-
 class CartList
   constructor: (cartList) ->
     @cartList = $(cartList)
@@ -66,7 +39,7 @@ class CartList
     carts = $.map $('.cart-items'), (cart, i) ->
       new Cart(cart)
 
-class Cart
+class @Cart
   constructor: (cart) ->
     @cart = $(cart)
     @id = @cart.data('id')
@@ -93,8 +66,6 @@ jQuery ->
   if !($('.products').length > 0)
     return
 
-  products = $.map $('.product-item'), (product, i) ->
-    new Product(product)
   cartList = new CartList($('.modal-content'))
 
   $('#cart-show-btn').on 'click', ->
