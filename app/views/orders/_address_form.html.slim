@@ -1,22 +1,27 @@
-= form_for Address.new, url: orders_path do |f|
-  .field.form-group
-    = f.label :line1
-    br
-    = f.text_field :line1, required: true, class: "form-control"
-  .field.form-group
-    = f.label :line2
-    br
-    = f.text_field :line2, class: "form-control"
-  .field.form-group
-    = f.label :city
-    br
-    = f.text_field :city,required: true, class: "form-control"
-  .field.form-group
-    = f.label :state
-    br
-    = f.text_field :state, class: "form-control"
-  / .field.form-group
-  /   = f.label :country_code
-  /   br
-  /   = f.country_select :country_code, class: "form-control"
-  = f.submit "Create", class: 'btn btn-primary btn-block btn-lg'
+= form_for Address.new, url: addresses_path, remote: true do |f|
+  .form-row
+    .form-group.col-md-4
+      = f.label 'Line 1'
+      = f.text_field :line1, required: true, placeholder: 'Number or street', class: "form-control"
+    .form-group.col-md-4
+      = f.label 'Line 2'
+      = f.text_field :line2, placeholder: 'Suite or apartment number', class: "form-control"
+    .form-group.col-md-4
+      = f.label 'Postal Code'
+      = f.text_field :postal_code, placeholder: 'Zip Code', class: "form-control"
+  .form-row
+    .form-group.col-md-4
+      = f.label :city
+      = f.text_field :city, placeholder: 'City Name', class: "form-control"
+    .form-group.col-md-4
+      .field.form-group
+        = f.label :state
+        = f.text_field :state, placeholder: 'State', class: "form-control"
+    .form-group.col-md-4
+      .field.form-group
+        = f.label :country_code
+        = f.country_select :country_code, {}, { class: 'form-control' }
+  .row
+    .col-md-3
+    .col-md-6.text-center
+      = f.submit "Save", data: { disable_with: 'Creating' }, class: 'btn btn-primary btn-block btn-lg'

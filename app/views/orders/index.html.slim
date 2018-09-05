@@ -1,34 +1,47 @@
 #checkout-page
-  .row
-    .col-md-12
-      h3.text-center Cart Detail
-      #order-detail
-        table.table
-          thead
-            tr
-              th  Id
-              th  Products
-              th  Quantity
-              th.co-price  Price
-          tbody
-        .co-total-price.text-center
-      .payment-btn
+  #step-1
+    .row
+      .col-2
+      .col-md-8.border-form
+        h1.text-center Step 1: Check your cart again
+        #order-detail
+          table.table
+            thead
+              tr
+                th  Id
+                th  Products
+                th  Quantity
+                th.co-price  Price
+            tbody
+          .co-total-price.text-center
+    .row
+      .col-md-4
+      .col-md-4.text-center
+        button.btn.btn-block.btn-info.btn-lg#go-to-address Next Step
         / button.btn.btn-info.btn-lg.d-block COD Checkout
         / button.btn.btn-success.btn-lg.d-block Google Checkout
-    .col-md-8.address-section
-      h3.text-center Choose your address
-      .form-group
-        label for="name" Name
-        input value = current_user.full_name type="text" class="form-control" id="full-name" placeholder="Full Name"
-      .form-group
-        label for="phone" Phone
-        input value = current_user.phone type="text" class="form-control" id="phone" placeholder="Phone Number"
-      .form-group
-        label for="sel1" Select list:
-        select#address.form-control
-          - current_user.address.each do |add|
-            option=add.locate
-          option Choose new address
-      #shipping
-        = render 'address_form'
+  #step-2.address-section
+    .row
+      .col-md-2
+      .col-md-8.border-form
+        h1.text-center Step 2: Select your address
+        .form-group
+          label for="sel1" Shipping to:
+          select#address.form-control
+            = render 'addresses/address_list'
+            option Your Paypal address
+            option Create new address
+        #buyer
+          .form-group
+            label for="name" Name
+            input value = current_user.full_name type="text" class="form-control" id="full-name" placeholder="Name"
+          .form-group
+            label for="phone" Phone
+            input value = current_user.phone type="text" class="form-control" id="phone" placeholder="Phone Number"
+        #shipping
+          = render 'address_form'
+    .row
+      .col-md-4
+      .col-md-4.text-center
+        button.btn.btn-block.btn-info.btn-lg#go-to-address Next Step
         #paypal-button-container

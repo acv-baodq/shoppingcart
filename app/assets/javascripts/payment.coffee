@@ -34,7 +34,6 @@ class Payment
   constructor: (payment) ->
     @payment = $(payment)
     @initOrder()
-    @toggleMapEvent()
     @paypalEvent()
 
   paypalEvent: ->
@@ -42,11 +41,10 @@ class Payment
       env: 'sandbox'
       client: sandbox: 'ARbPOn02Xwrvl1PG9KQGWyaFdSneDVuIPWKOdhHE3mbKXJf6sTGUF67z43L6e2uTUCMhfqn-2uMUQ0Lu'
       style:
-        label: 'paypal'
+        label: 'checkout'
         size:  'large'
-        shape: 'rect'
-        color: 'blue'
-        tagline: false
+        shape: 'pill'
+        color: 'gold'
       commit: true
       payment: (data, actions) ->
         # Make a call to the REST api to create the payment
@@ -56,7 +54,7 @@ class Payment
             currency: 'USD'
           item_list:
             items: collectProduct()
-            shipping_address: shippingDetail()
+            # shipping_address: shippingDetail()
         }]
       onAuthorize: (data, actions) ->
         # Make a call to the REST api to execute the payment
@@ -64,17 +62,6 @@ class Payment
           window.alert 'Payment Complete!'
           return
     }, '#paypal-button-container'
-
-  toggleMapEvent: ->
-    @payment.find('#address').on 'change', @handleToggleMap
-
-  handleToggleMap: ->
-    address = $(this).find(':selected').text()
-    if address == 'Choose new address'
-      $('#shipping').show()
-    else
-      $('#shipping').hide()
-    return
 
   initOrder: ->
     $.ajax
@@ -98,7 +85,12 @@ $(document).ready ->
     return
 
   $('#cart-show-btn').hide()
-  $('#shipping').show()
+  $('.address-section').hide()
+  $('#go-to-address').on 'click', ->
+    $('.address-section').show()
+    $('html, body').animate({
+      scrollTop: $('.address-section').offset().top
+    }, 500);
 
   payment = new Payment($('#checkout-page'))
 
