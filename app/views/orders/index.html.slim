@@ -1,6 +1,6 @@
-#checkout-page data-cart="{}"
+#checkout-page
   .row
-    .col-md-6
+    .col-md-12
       h3.text-center Cart Detail
       #order-detail
         table.table
@@ -8,14 +8,14 @@
             tr
               th  Id
               th  Products
-              th  quantity
+              th  Quantity
               th.co-price  Price
           tbody
         .co-total-price.text-center
-      button.btn.btn-info.btn-lg.btn-block COD Checkout
-      button.btn.btn-success.btn-lg.btn-block Google Checkout
-      #paypal-button-container
-    .col-md-6
+      .payment-btn
+        / button.btn.btn-info.btn-lg.d-block COD Checkout
+        / button.btn.btn-success.btn-lg.d-block Google Checkout
+    .col-md-8.address-section
       h3.text-center Choose your address
       .form-group
         label for="name" Name
@@ -29,6 +29,6 @@
           - current_user.address.each do |add|
             option=add.locate
           option Choose new address
-      #shipping style=("height:100%; width:100%;")
-        input#pac-input.controls.form-control placeholder=("Search") type="text" /
-        #map
+      #shipping
+        = render 'address_form'
+        #paypal-button-container

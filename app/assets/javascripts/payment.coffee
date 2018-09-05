@@ -42,10 +42,11 @@ class Payment
       env: 'sandbox'
       client: sandbox: 'ARbPOn02Xwrvl1PG9KQGWyaFdSneDVuIPWKOdhHE3mbKXJf6sTGUF67z43L6e2uTUCMhfqn-2uMUQ0Lu'
       style:
-        label: 'checkout'
-        size: 'responsive'
-        shape: 'pill'
-        color: 'gold'
+        label: 'paypal'
+        size:  'large'
+        shape: 'rect'
+        color: 'blue'
+        tagline: false
       commit: true
       payment: (data, actions) ->
         # Make a call to the REST api to create the payment
@@ -97,11 +98,11 @@ $(document).ready ->
     return
 
   $('#cart-show-btn').hide()
-  $('#shipping').hide()
+  $('#shipping').show()
 
   payment = new Payment($('#checkout-page'))
 
-  setTimeout (->
-    collectProduct()
-    return
-  ), 3000
+  # setTimeout (->
+  #   collectProduct()
+  #   return
+  # ), 3000

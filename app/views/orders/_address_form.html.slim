@@ -1,0 +1,22 @@
+= form_for Address.new, url: orders_path do |f|
+  .field.form-group
+    = f.label :line1
+    br
+    = f.text_field :line1, required: true, class: "form-control"
+  .field.form-group
+    = f.label :line2
+    br
+    = f.text_field :line2, class: "form-control"
+  .field.form-group
+    = f.label :city
+    br
+    = f.text_field :city,required: true, class: "form-control"
+  .field.form-group
+    = f.label :state
+    br
+    = f.text_field :state, class: "form-control"
+  / .field.form-group
+  /   = f.label :country_code
+  /   br
+  /   = f.country_select :country_code, class: "form-control"
+  = f.submit "Create", class: 'btn btn-primary btn-block btn-lg'
