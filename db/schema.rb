@@ -17,13 +17,12 @@ ActiveRecord::Schema.define(version: 2018_09_04_152509) do
 
   create_table "addresses", force: :cascade do |t|
     t.bigint "user_id"
-    t.string "locate"
     t.string "line1"
     t.string "line2"
     t.string "city"
     t.string "state"
-    t.string "country_code"
-    t.string "postal_code", limit: 2
+    t.string "country_code", limit: 2
+    t.string "postal_code"
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 

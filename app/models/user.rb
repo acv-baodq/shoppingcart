@@ -4,7 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_one :cart
-  has_many :address
+  has_many :addresses
+
+  validates :first_name, :last_name, :phone, presence: true
 
   def full_name
     [first_name, last_name].reject(&:blank?).join(' ').titleize

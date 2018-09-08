@@ -1,0 +1,27 @@
+= form_for @address, remote: true do |f|
+  .form-row
+    .form-group.col-md-4
+      = f.label 'Line 1 (require)'
+      = f.text_field :line1, required: true, placeholder: 'Number or street', class: "form-control"
+    .form-group.col-md-4
+      = f.label 'Line 2'
+      = f.text_field :line2, placeholder: 'Suite or apartment number', class: "form-control"
+    .form-group.col-md-4
+      = f.label 'Postal Code'
+      = f.text_field :postal_code, placeholder: 'Zip Code', class: "form-control"
+  .form-row
+    .form-group.col-md-4
+      = f.label 'City (require)'
+      = f.text_field :city, required: true, placeholder: 'City Name', class: "form-control"
+    .form-group.col-md-4
+      .field.form-group
+        = f.label 'State (require)'
+        = f.text_field :state, required: true, placeholder: 'State', class: "form-control"
+    .form-group.col-md-4
+      .field.form-group
+        = f.label 'Country (require)'
+        = f.country_select :country_code, {}, { class: 'form-control' }
+  .row
+    .col-md-3
+    .col-md-6.text-center
+      = f.submit  data: { disable_with: 'Loading...' }, class: 'btn btn-block btn-primary'

@@ -17,31 +17,5 @@
     .row
       .col-md-4
       .col-md-4.text-center
-        button.btn.btn-block.btn-info.btn-lg#go-to-address Next Step
-        / button.btn.btn-info.btn-lg.d-block COD Checkout
-        / button.btn.btn-success.btn-lg.d-block Google Checkout
-  #step-2.address-section
-    .row
-      .col-md-2
-      .col-md-8.border-form
-        h1.text-center Step 2: Select your address
-        .form-group
-          label for="sel1" Shipping to:
-          select#address.form-control
-            = render 'addresses/address_list'
-            option Your Paypal address
-            option Create new address
-        #buyer
-          .form-group
-            label for="name" Name
-            input value = current_user.full_name type="text" class="form-control" id="full-name" placeholder="Name"
-          .form-group
-            label for="phone" Phone
-            input value = current_user.phone type="text" class="form-control" id="phone" placeholder="Phone Number"
-        #shipping
-          = render 'address_form'
-    .row
-      .col-md-4
-      .col-md-4.text-center
-        button.btn.btn-block.btn-info.btn-lg#go-to-address Next Step
-        #paypal-button-container
+        = link_to 'Next Step', addresses_path, remote: true, class: 'btn btn-block btn-info btn-lg', id: 'go-to-address'
+  = render 'address_form'

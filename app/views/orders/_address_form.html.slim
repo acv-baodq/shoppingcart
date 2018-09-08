@@ -1,27 +1,28 @@
-= form_for Address.new, url: addresses_path, remote: true do |f|
-  .form-row
-    .form-group.col-md-4
-      = f.label 'Line 1'
-      = f.text_field :line1, required: true, placeholder: 'Number or street', class: "form-control"
-    .form-group.col-md-4
-      = f.label 'Line 2'
-      = f.text_field :line2, placeholder: 'Suite or apartment number', class: "form-control"
-    .form-group.col-md-4
-      = f.label 'Postal Code'
-      = f.text_field :postal_code, placeholder: 'Zip Code', class: "form-control"
-  .form-row
-    .form-group.col-md-4
-      = f.label :city
-      = f.text_field :city, placeholder: 'City Name', class: "form-control"
-    .form-group.col-md-4
-      .field.form-group
-        = f.label :state
-        = f.text_field :state, placeholder: 'State', class: "form-control"
-    .form-group.col-md-4
-      .field.form-group
-        = f.label :country_code
-        = f.country_select :country_code, {}, { class: 'form-control' }
+#step-2.address-section
   .row
-    .col-md-3
-    .col-md-6.text-center
-      = f.submit "Save", data: { disable_with: 'Creating' }, class: 'btn btn-primary btn-block btn-lg'
+    .col-md-2
+    .col-md-8.border-form
+      h1.text-center Step 2: Select your address
+      .form-row
+        .form-group.col-md-6
+          label Recipient Name
+          input#recipient_name.form-control value=current_user.full_name disabled='true'
+        .form-group.col-md-6
+          label Phone
+          input#phone.form-control value=current_user.phone disabled='true'
+      .row
+        .col-md-8
+          .form-group
+            label class="badge badge-success" for="sel1" Shipping to:
+            select#address.form-control
+        .col-md-4.text-center
+          = link_to new_address_path, remote: true, id: 'create-new-address'
+            = fa_icon 'plus'
+            |  Create New
+      #shipping
+        #shipping-address-form
+  .row
+    .col-md-4
+    .col-md-4.text-center
+      br
+      #paypal-button-container
