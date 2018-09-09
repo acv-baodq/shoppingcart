@@ -2,7 +2,7 @@ jQuery ->
   $('#cart-show-btn').on 'click', ->
     $('#cart').modal 'show'
 
-  if !($('.products').length > 0)
+  if !($('.products').length > 0 || $('.categories').length > 0)
     return
 
   cartList = new CartList($('.modal-content'))

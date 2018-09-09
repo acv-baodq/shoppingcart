@@ -10,46 +10,32 @@ class Payment
 
   handleShowAddress: ->
     $(this).remove()
-    $.LoadingOverlay 'show'
-    # $.ajax
-    #   type: 'GET'
-    #   url: "/addresses"
-    #   success: (res) ->
-    #     $.each res.data, (index, value) ->
-    #       $('#address').append("<option data-address='#{JSON.stringify(value)}' id=#{value.id}>#{value.line1} #{value.line2} #{value.city}, #{value.state}, #{value.postal_code}, #{value.country_code} </option>")
     $('.address-section').show()
     $('html, body').animate({
       scrollTop: $('.address-section').offset().top
     }, 500);
-    $.LoadingOverlay 'hide'
 
   paypalEvent: ->
     paypal.Button.render {
       env: 'sandbox'
-      client: sandbox: 'ARbPOn02Xwrvl1PG9KQGWyaFdSneDVuIPWKOdhHE3mbKXJf6sTGUF67z43L6e2uTUCMhfqn-2uMUQ0Lu'
       style:
         label: 'checkout'
         size:  'responsive'
         shape: 'pill'
         color: 'gold'
-      commit: true
       payment: (data, actions) ->
-        # Make a call to the REST api to create the payment
-        shippingAddress = getShippingAddress()
-        console.log('shipping', shippingAddress)
-        actions.payment.create payment: transactions: [{
-          amount:
-            total: $('.co-total-price').find('strong').text()
-            currency: 'USD'
-          item_list:
-            items: collectProduct()
-            shipping_address: shippingAddress
-            # shipping_address: undefined
-        }]
+        actions.request.post('/orders').then (res) ->
+          res.id
       onAuthorize: (data, actions) ->
-        # Make a call to the REST api to execute the payment
-        actions.payment.execute().then ->
-          window.alert 'Payment Complete!'
+        # 2. Make a request to your server
+        $.LoadingOverlay('show')
+        actions.request.post('/orders/execute-payment',
+          paymentID: data.paymentID
+          payerID: data.payerID).then (res) ->
+          # 3. Show the buyer a confirmation message.
+            toastr['success']('Checkout success')
+            $.LoadingOverlay('hide')
+            $(location).attr('href','/orders');
           return
     }, '#paypal-button-container'
 
@@ -106,7 +92,7 @@ class Payment
 
 $(document).ready ->
   # #initial if controller is Order Controller
-  if !($('.orders').length > 0)
+  if !($('#checkout').length > 0)
     return
 
   payment = new Payment($('#checkout-page'))

@@ -10,10 +10,23 @@ class AddressesController < ApplicationController
     @address = Address.new
   end
 
+  def change_selected
+    id = params[:id].to_s
+    address = Address.find(id)
+    address.selected = true
+    address.change_selected_address
+
+    render json: 200 if address.save
+  end
+
   def create
     @address = Address.new(address_params)
     @address.user_id = current_user.id
-    return @message = 'Create success' if @address.save
+    @address.selected = true
+    Address.change_selected_address(current_user.id)
+    if @address.save
+      return @message = 'Create success'
+    end
     @message = @address.errors.full_messages
   end
 

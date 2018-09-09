@@ -1,0 +1,21 @@
+#checkout-page
+  #step-1
+    .row
+      .col-2
+      .col-md-8.border-form
+        h1.text-center Step 1: Check your cart again
+        #order-detail
+          table.table
+            thead
+              tr
+                th  Id
+                th  Products
+                th  Quantity
+                th.co-price  Price
+            tbody
+          .co-total-price.text-center
+    .row
+      .col-md-4
+      .col-md-4.text-center
+        = link_to 'Next Step', addresses_path, remote: true, class: 'btn btn-block btn-info btn-lg', id: 'go-to-address'
+  = render 'address_form'

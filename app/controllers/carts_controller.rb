@@ -1,6 +1,6 @@
 class CartsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  after_action :save_to_current_user, except: [:show]
+  after_action :save_to_current_user, :total_price, except: [:show]
 
   def index
     render json: {data: @cart['data']}

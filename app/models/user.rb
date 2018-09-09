@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_one :cart
   has_many :addresses
+  has_many :orders
 
   validates :first_name, :last_name, :phone, presence: true
 
