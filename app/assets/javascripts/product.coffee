@@ -8,7 +8,6 @@ class Product
     @product.find('.btn-cart').on 'click', @handleAddToCart
 
   handleAddToCart: =>
-    debugger
     $.LoadingOverlay 'show'
     id = @id
     $("#cart-item-#{@id}").remove()

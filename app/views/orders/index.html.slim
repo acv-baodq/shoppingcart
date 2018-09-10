@@ -15,8 +15,8 @@ table.table
           td = order.id
           td = order.data['id']
           td = order.data['state']
-          td = order.data['transactions'][0]['amount']['total']
-          td = order.data['transactions'][0]['item_list']['items'].size
+          td = payment_total_price(order.data)
+          td = payment_total_products(order.data)
           td = order.data['create_time']
           td
             = link_to 'Show', order_path(order.id)

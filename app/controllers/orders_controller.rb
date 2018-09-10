@@ -48,6 +48,7 @@ class OrdersController < ApplicationController
   def execute_payment
     payment = PayPal::SDK::REST::Payment.find(params['paymentID'])
     if payment.execute( :payer_id => params['payerID'] )
+      UserMailer.checkout_success(current_user, current_user.cart).deliver
       current_user.cart.destroy
       @order = Order.new(user_id: current_user.id, data: payment)
       @order.save
