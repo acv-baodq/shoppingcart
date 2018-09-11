@@ -28,6 +28,10 @@ class AddressesController < ApplicationController
     @address.selected = true
     Address.change_selected_address(current_user.id)
     @message = @address.save ? 'Create success' : @address.errors.full_messages
+    respond_to do |format|
+      format.html { render plain: 'Not support'  }
+      format.js
+    end
   end
 
   def update

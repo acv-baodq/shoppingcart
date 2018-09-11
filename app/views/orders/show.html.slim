@@ -1,0 +1,21 @@
+#order-show
+  .row
+    .col-md-2
+    .col-md-8
+      .border-form
+        div
+          h2 Product Items:
+          ol type='1'
+            - payment_product_items(@order.data).each do |item|
+              li
+                p=(item['name'] + '   x ' + item['quantity'])
+                p=('$' + item['price'])
+        div
+          h2 Shipping to:
+          ul
+            li=payment_address(@order.data)
+        div
+          h2 Total price:
+          ul
+            li
+              h3= ('$' + payment_total_price(@order.data))

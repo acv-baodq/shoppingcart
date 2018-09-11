@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type" /
+  body
+    h1
+      | Welcome to ShoppingApp, #{@user.full_name}
+    h2 Your ordered detail
+    ul.list-group.list-group-flush
+      - @order.data.each do |key, val|
+        li.list-group-item
+          = "#{val['name']} x#{val['quantity']}"
+    h2
+      | Total price: $#{@order.total_price}

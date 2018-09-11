@@ -58,21 +58,6 @@ class Payment
          '</tr>'
     row
 
-  getShippingAddress = ->
-    data = $('#address').find(":selected").data('address')
-    detail = {}
-
-    detail['line1'] = if data['line1'] && data['line1'].length > 0 then data['line1'] else undefined
-    detail['line2'] = if data['line2'] && data['line2'].length > 0 then data['line2'] else undefined
-    detail['city'] = if data['city'] && data['city'].length > 0 then data['city'] else undefined
-    detail['state'] = if data['state'] && data['state'].length > 0 then data['state'] else undefined
-    detail['postal_code'] = if data['postal_code'] && data['postal_code'].length > 0 then data['postal_code'] else undefined
-
-    detail['country_code'] = 'US'
-    detail['recipient_name'] = $('#recipient_name').val()
-    detail['phone'] = $('#phone').val()
-    return detail
-
   initOrder: ->
     $('#cart-show-btn').hide()
     $('.address-section').hide()

@@ -13,6 +13,7 @@ gem 'enumerize'
 gem 'countries'
 gem 'country_select', '~> 3.1'
 gem 'paypal-sdk-rest'
+gem 'dotenv-rails'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.1'
 # Use Puma as the app server

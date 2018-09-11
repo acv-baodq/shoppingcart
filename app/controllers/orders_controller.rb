@@ -4,6 +4,9 @@ class OrdersController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :authenticate_user!
 
+  def show
+    @order = Order.find(params[:id])
+  end
 
   def checkout
 
@@ -37,7 +40,6 @@ class OrdersController < ApplicationController
         }
       ]
     })
-
     if @payment.create
       render json: { id: @payment.id }
     else
@@ -48,7 +50,8 @@ class OrdersController < ApplicationController
   def execute_payment
     payment = PayPal::SDK::REST::Payment.find(params['paymentID'])
     if payment.execute( :payer_id => params['payerID'] )
-      UserMailer.checkout_success(current_user, current_user.cart).deliver
+      binding.pry
+      # UserMailer.checkout_success(current_user, current_user.cart).deliver
       current_user.cart.destroy
       @order = Order.new(user_id: current_user.id, data: payment)
       @order.save
