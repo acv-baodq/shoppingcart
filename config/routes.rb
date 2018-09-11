@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :carts
   resources :addresses do
     member do
-      post 'change-selected'
+      post 'change_selected'
     end
   end
 

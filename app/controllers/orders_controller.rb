@@ -52,8 +52,6 @@ class OrdersController < ApplicationController
       current_user.cart.destroy
       @order = Order.new(user_id: current_user.id, data: payment)
       @order.save
-      # payment_history = PayPal::SDK::REST::Payment.all( :count => 10 )
-      # payment_history.payments
       render json: {data: payment}
     else
       payment.error # Error Hash

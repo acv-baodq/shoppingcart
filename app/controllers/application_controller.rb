@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
 
     def total_price
       total_price = 0
+      return total_price if @cart['data'].blank?
       @cart['data'].each do |key, val|
         total_price += ( val['quantity'].to_i * val['price'].to_f )
       end

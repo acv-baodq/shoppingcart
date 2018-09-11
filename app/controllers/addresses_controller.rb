@@ -3,7 +3,6 @@ class AddressesController < ApplicationController
   before_action :get_all_locate, except: [:new, :show]
 
   def index
-    # render json: {data: Address.locates(current_user.id)}
   end
 
   def new
@@ -14,8 +13,12 @@ class AddressesController < ApplicationController
     id = params[:id].to_s
     address = Address.find(id)
     address.selected = true
-    address.change_selected_address
 
+    begin
+      Address.change_selected_address(current_user.id)
+    rescue Exception => error
+      render json: { message: 'Something went wrong...' }
+    end
     render json: 200 if address.save
   end
 
@@ -24,10 +27,7 @@ class AddressesController < ApplicationController
     @address.user_id = current_user.id
     @address.selected = true
     Address.change_selected_address(current_user.id)
-    if @address.save
-      return @message = 'Create success'
-    end
-    @message = @address.errors.full_messages
+    @message = @address.save ? 'Create success' : @address.errors.full_messages
   end
 
   def update

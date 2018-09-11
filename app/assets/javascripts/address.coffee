@@ -9,9 +9,12 @@ class Address
       id = $(this).find(":selected").data('address').id
       $.ajax
         type: 'POST'
-        url: "/addresses/#{id}/change-selected"
+        url: "/addresses/#{id}/change_selected"
         success: (res) ->
           $.LoadingOverlay('hide')
+        error: (jqXHR, textStatus, errorThrown) ->
+          toastr['error']('Something went wrong')
+
 
 
 jQuery ->
