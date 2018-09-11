@@ -3,6 +3,7 @@ class Address < ApplicationRecord
   belongs_to :user
 
   validates :line1, :city, :state, :country_code, presence: true
+  validates :postal_code, numericality: true
 
   enumerize :country_code, in: ISO3166::Country.translations.invert
 

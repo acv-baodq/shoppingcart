@@ -27,20 +27,23 @@ class AddressesController < ApplicationController
     @address.user_id = current_user.id
     @address.selected = true
     Address.change_selected_address(current_user.id)
-    @message = @address.save ? 'Create success' : @address.errors.full_messages
+    @message = @address.save ? { type: 'success', content: 'Create success'} : {type: 'error', content: @address.errors.full_messages }
     respond_to do |format|
       format.html { render plain: 'Not support'  }
       format.js
     end
   end
 
-  def update
-    @address = Address.find(params[:id])
-    @address.update(address_params)
-  end
-
   def show
     render json: { data: Address.where(user_id: current_user.id) }
+  end
+
+  def destroy
+    @address = Address.find(params[:id])
+    if @address.destroy
+      # render json: { messages: 'Delete success' }
+      render :index, :@addresses => current_user.addresses, :format => :js
+    end
   end
 
   private

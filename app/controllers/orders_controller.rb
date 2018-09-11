@@ -78,12 +78,12 @@ class OrdersController < ApplicationController
       return {
         recipient_name: current_user.full_name,
         line1: address.line1,
-        line2: address.line2.present? ? address.line2 : nil,
+        line2: address.try(:line2),
         city: address.city,
         country_code: country_code,
         postal_code: address.postal_code,
         phone: current_user.phone,
-        state: address.state.present? ? address.state : nil
+        state: address.try(:state)
       }
     end
 end
