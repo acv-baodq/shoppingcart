@@ -1,81 +1,71 @@
-createTableRow = (data) ->
-  row = '<tr>' +
-          '<td>' + data.id + '</td>' +
-          '<td><img class="img-fluid" src="' + data.img_url + '" />' + data.name + '</td>' +
-          '<td>' + data.quantity + '</td>' +
-          '<td>$' + data.price + '</td>' +
-       '</tr>'
-  row
-
-collectProduct = ->
-  data = []
-  $.map $('.modal-content').data('cart'), (key, val) ->
-    obj = key
-    obj["currency"] = "USD"
-    delete obj["id"]
-    delete obj["img_url"]
-    data.push obj
-  data
-
-shippingDetail = ->
-  detail = {}
-  detail['recipient_name'] = $('#full-name').val()
-  detail['line1'] = $('#address').find(':selected').text()
-  detail['line2'] = ''
-  detail['city'] = 'HCM'
-  detail['country_code'] = 'VN'
-  detail['postal_code'] = '70000'
-  detail['phone'] = $('#phone').val()
-  detail['state'] = 'HCM'
-
-  detail
-
 class Payment
   constructor: (payment) ->
     @payment = $(payment)
     @initOrder()
-    @toggleMapEvent()
     @paypalEvent()
+    @showAddress()
+
+  showAddress: ->
+    @payment.find('#go-to-address').on 'click', @handleShowAddress
+
+  handleShowAddress: ->
+    $(this).remove()
+    $('.address-section').show()
+    $('html, body').animate({
+      scrollTop: $('.address-section').offset().top
+    }, 500);
 
   paypalEvent: ->
     paypal.Button.render {
       env: 'sandbox'
-      client: sandbox: 'ARbPOn02Xwrvl1PG9KQGWyaFdSneDVuIPWKOdhHE3mbKXJf6sTGUF67z43L6e2uTUCMhfqn-2uMUQ0Lu'
       style:
         label: 'checkout'
-        size: 'responsive'
+        size:  'responsive'
         shape: 'pill'
         color: 'gold'
-      commit: true
       payment: (data, actions) ->
-        # Make a call to the REST api to create the payment
-        actions.payment.create payment: transactions: [{
-          amount:
-            total: $('.co-total-price').find('strong').text()
-            currency: 'USD'
-          item_list:
-            items: collectProduct()
-            shipping_address: shippingDetail()
-        }]
+        actions.request.post('/orders').then (res) ->
+          if res.status == 'OK'
+            res.id
+          else
+            toastr.error('Oops! Something when wrong')
       onAuthorize: (data, actions) ->
-        # Make a call to the REST api to execute the payment
-        actions.payment.execute().then ->
-          window.alert 'Payment Complete!'
+        # 2. Make a request to your server
+        $.LoadingOverlay('show')
+        actions.request.post('/orders/execute-payment',
+          paymentID: data.paymentID
+          payerID: data.payerID).then (res) ->
+            if res.status == 'OK'
+              toastr['success']('Checkout success')
+              $.LoadingOverlay('hide')
+              $(location).attr('href','/orders');
+            else
+              toastr['error'](res.messages)
           return
     }, '#paypal-button-container'
 
-  toggleMapEvent: ->
-    @payment.find('#address').on 'change', @handleToggleMap
+  collectProduct = ->
+    data = []
+    $.map $('.modal-content').data('cart'), (key, val) ->
+      obj = key
+      obj["currency"] = "USD"
+      delete obj["id"]
+      delete obj["img_url"]
+      data.push obj
+    data
 
-  handleToggleMap: ->
-    address = $(this).find(':selected').text()
-    if address == 'Choose new address'
-      $('#shipping').show()
-    else
-      $('#shipping').hide()
-    return
+  createTableRow = (data) ->
+    row = '<tr>' +
+            '<td>' + data.id + '</td>' +
+            '<td><img class="img-fluid" src="' + data.img_url + '" />' + data.name + '</td>' +
+            '<td>' + data.quantity + '</td>' +
+            '<td>$' + data.price + '</td>' +
+         '</tr>'
+    row
 
   initOrder: ->
+    $('#cart-show-btn').hide()
+    $('.address-section').hide()
     $.ajax
       type: 'GET'
       url: '/carts'
@@ -90,18 +80,9 @@ class Payment
         $.LoadingOverlay 'hide'
       error: (jqXHR, textStatus, errorThrown) ->
 
-
 $(document).ready ->
   # #initial if controller is Order Controller
-  if !($('.orders').length > 0)
+  if !($('#checkout').length > 0)
     return
-
-  $('#cart-show-btn').hide()
-  $('#shipping').hide()
 
   payment = new Payment($('#checkout-page'))
-
-  setTimeout (->
-    collectProduct()
-    return
-  ), 3000

@@ -10,11 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_01_115052) do
+ActiveRecord::Schema.define(version: 2018_09_09_092933) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "addresses", force: :cascade do |t|
-    t.integer "user_id"
-    t.string "locate"
+    t.bigint "user_id"
+    t.string "line1"
+    t.string "line2"
+    t.string "city"
+    t.string "state"
+    t.string "country_code", limit: 2
+    t.string "postal_code"
+    t.boolean "selected", default: false
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
@@ -23,6 +32,7 @@ ActiveRecord::Schema.define(version: 2018_09_01_115052) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.json "data", default: {}
+    t.decimal "total_price", precision: 10, scale: 2, default: "0.0"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -31,13 +41,19 @@ ActiveRecord::Schema.define(version: 2018_09_01_115052) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "orders", force: :cascade do |t|
+    t.bigint "user_id"
+    t.json "data"
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.decimal "price", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "category_id"
+    t.bigint "category_id"
     t.string "img_url"
     t.index ["category_id"], name: "index_products_on_category_id"
   end

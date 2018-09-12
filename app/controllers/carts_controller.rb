@@ -1,6 +1,6 @@
 class CartsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  after_action :save_to_current_user, except: [:show]
+  after_action :save_to_current_user, :total_price, except: [:show]
 
   def index
     render json: {data: @cart['data']}
@@ -8,15 +8,18 @@ class CartsController < ApplicationController
 
   def update
     product = Product.find(params[:id].to_i)
-    if(@cart['data'].key? product.id.to_s)
-      @cart['data'][product.id.to_s]['quantity'] = (@cart['data'][product.id.to_s]['quantity'].to_i + 1).to_s
-      return render json: {data: @cart['data'][product.id.to_s], messages: "Added #{product.name} x#{@cart['data'][product.id.to_s]['quantity']}" }
-    else
-      data_build = product.attributes.except('created_at', 'updated_at', 'category_id')
-      data_build['quantity'] = '1'
+    if product.present?
+      if(@cart['data'].key? product.id.to_s)
+        @cart['data'][product.id.to_s]['quantity'] = (@cart['data'][product.id.to_s]['quantity'].to_i + 1).to_s
+        return render json: {data: @cart['data'][product.id.to_s], messages: "Added #{product.name} x#{@cart['data'][product.id.to_s]['quantity']}" }
+      else
+        data_build = product.attributes.except('created_at', 'updated_at', 'category_id')
+        data_build['quantity'] = '1'
+      end
+      @cart['data'][product.id.to_s] = data_build
+      return render json: {data: data_build, messages: "Added #{product.name} success" }
     end
-    @cart['data'][product.id.to_s] = data_build
-    render json: {data: data_build, messages: "Added #{product.name} success" }
+    render json: {messages: "Cant find products" }
   end
 
   def show
@@ -25,8 +28,11 @@ class CartsController < ApplicationController
 
   def destroy
     product = Product.find(params[:id].to_i)
-    @cart['data'].delete(product.id.to_s)
-    render json: { messages: "Delete #{product.name} success" }
+    if product.present?
+      @cart['data'].delete(product.id.to_s)
+      return render json: { messages: "Delete #{product.name} success" }
+    end
+    return render json: { messages: "Cant find product" }
   end
 
   def create

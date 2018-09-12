@@ -5,12 +5,13 @@ Rails.application.routes.draw do
   resources :categories, only: [:index, :show]
   resources :products, only: [:index, :show]
   resources :carts
+  resources :addresses do
+    member do
+      post 'change_selected'
+    end
+  end
 
-  resources :orders, only: [:index, :create]
-
-  # get 'cart_init', to: 'carts#init_data'
-  # post 'carts/:id', to: 'carts#add'
-  # post 'carts_quantity', to: 'carts#change_quantity'
-  # get 'carts', to: 'carts#show'
-  # delete 'carts_delete/:id', to: 'carts#destroy', as:'cart_delete'
+  get 'orders/checkout', to: 'orders#checkout'
+  post 'orders/execute-payment', to: 'orders#execute_payment'
+  resources :orders
 end

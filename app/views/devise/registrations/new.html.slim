@@ -11,6 +11,18 @@
             br/
             = f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control"
           .field.form-group
+            = f.label :first_name
+            br/
+            = f.text_field :first_name, autofocus: true, class: "form-control"
+          .field.form-group
+            = f.label :last_name
+            br/
+            = f.text_field :last_name, autofocus: true, class: "form-control"
+          .field.form-group
+            = f.label :phone
+            br/
+            = f.text_field :phone, autofocus: true, class: "form-control"
+          .field.form-group
             = f.label :password
             - if @minimum_password_length
               em

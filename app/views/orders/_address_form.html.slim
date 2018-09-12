@@ -1,0 +1,29 @@
+#step-2.address-section
+  .row
+    .col-md-2
+    .col-md-8.border-form
+      h1.text-center Step 2: Select your address
+      .form-row
+        .form-group.col-md-6
+          label Recipient Name
+          input#recipient_name.form-control value=current_user.full_name disabled='true'
+        .form-group.col-md-6
+          label Phone
+          input#phone.form-control value=current_user.phone disabled='true'
+      .row
+        .col-md-8
+          .form-group
+            label class="badge badge-success" for="sel1" Shipping to:
+            select#address.form-control
+        .col-md-4.text-center
+          = link_to new_address_path, remote: true, id: 'create-new-address'
+            = fa_icon 'plus'
+            |  Create New
+      #shipping
+        #shipping-address-form
+      a#delete-address href='javascript:void(0);' Delete address
+  .row
+    .col-md-4
+    .col-md-4.text-center
+      br
+      #paypal-button-container

@@ -1,0 +1,4 @@
+toastr["<%= @message[:type] %>"]("<%= @message[:content] %>")
+$('#address').html("<%= j render 'select_form', addresses: @addresses %>")
+$('#shipping-address-form').hide()
+$('#create-new-address').show()
