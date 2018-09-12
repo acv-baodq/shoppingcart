@@ -8,5 +8,6 @@ FactoryBot.define do
     state { 'state' }
     postal_code { '40420' }
     country_code { 'Viet Nam' }
+    user
   end
 end

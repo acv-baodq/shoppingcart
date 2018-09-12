@@ -14,7 +14,11 @@ class Address < ApplicationRecord
     [line1, line2, city, state, country_code].reject(&:blank?).join(', ').titleize
   end
 
-  def self.change_selected_address(user_id)
-    where(user_id: user_id).update_all(selected: false)
+  # def self.change_selected_address(user_id)
+  #   where(user_id: user_id).update_all(selected: false)
+  # end
+  def self.change_selected_address(id = nil, user_id)
+    where.not(id: id).where(user_id: user_id).update_all(selected: false) if id
   end
+
 end

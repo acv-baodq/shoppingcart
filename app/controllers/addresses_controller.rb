@@ -15,7 +15,7 @@ class AddressesController < ApplicationController
     address.selected = true
 
     begin
-      Address.change_selected_address(current_user.id)
+      Address.change_selected_address(id, current_user.id)
     rescue Exception => error
       render json: { message: 'Something went wrong...' }
     end
@@ -26,8 +26,12 @@ class AddressesController < ApplicationController
     @address = Address.new(address_params)
     @address.user_id = current_user.id
     @address.selected = true
-    Address.change_selected_address(current_user.id)
-    @message = @address.save ? { type: 'success', content: 'Create success'} : {type: 'error', content: @address.errors.full_messages }
+    if @address.save
+      Address.change_selected_address(@address.id, current_user.id)
+      @message =  { type: 'success', content: 'Create success'}
+    else
+      @message = { type: 'error', content: @address.errors.full_messages }
+    end
     respond_to do |format|
       format.html { render plain: 'Not support'  }
       format.js
@@ -41,8 +45,11 @@ class AddressesController < ApplicationController
   def destroy
     @address = Address.find(params[:id])
     if @address.destroy
-      # render json: { messages: 'Delete success' }
       render :index, :@addresses => current_user.addresses, :format => :js
+    end
+    if @address.selected && current_user.addresses.count > 0
+      Address.change_selected_address(current_user.id)
+      current_user.addresses.first.update(selected: true)
     end
   end
 
@@ -52,6 +59,6 @@ class AddressesController < ApplicationController
     end
 
     def get_all_locate
-      @addresses =  Address.locates(current_user.id)
+      @addresses =  Address.order(selected: :desc).locates(current_user.id)
     end
 end

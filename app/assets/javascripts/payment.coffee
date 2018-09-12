@@ -25,17 +25,22 @@ class Payment
         color: 'gold'
       payment: (data, actions) ->
         actions.request.post('/orders').then (res) ->
-          res.id
+          if res.status == 'OK'
+            res.id
+          else
+            toastr.error('Oops! Something when wrong')
       onAuthorize: (data, actions) ->
         # 2. Make a request to your server
         $.LoadingOverlay('show')
         actions.request.post('/orders/execute-payment',
           paymentID: data.paymentID
           payerID: data.payerID).then (res) ->
-          # 3. Show the buyer a confirmation message.
-            toastr['success']('Checkout success')
-            $.LoadingOverlay('hide')
-            $(location).attr('href','/orders');
+            if res.status == 'OK'
+              toastr['success']('Checkout success')
+              $.LoadingOverlay('hide')
+              $(location).attr('href','/orders');
+            else
+              toastr['error'](res.messages)
           return
     }, '#paypal-button-container'
 

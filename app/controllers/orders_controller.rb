@@ -3,6 +3,7 @@ require 'paypal-sdk-rest'
 class OrdersController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :authenticate_user!
+  before_action :empty_cart?, only: [:checkout]
 
   def show
     @order = Order.find(params[:id])
@@ -23,9 +24,8 @@ class OrdersController < ApplicationController
         :payment_method =>  "paypal"
       },
       :redirect_urls => {
-        :return_url => "http://localhost:3000/categories",
-        :cancel_url => "http://localhost:3000/products"
-      },
+       :return_url => "/",
+       :cancel_url => "/" },
       :transactions =>  [
         {
           :item_list => {
@@ -41,23 +41,27 @@ class OrdersController < ApplicationController
       ]
     })
     if @payment.create
-      render json: { id: @payment.id }
+      render json: { id: @payment.id, status: 'OK' }
     else
-      render json: { error: @payment.error }
+      render json: { error: @payment.error, status: 'FAILED' }
     end
   end
 
   def execute_payment
     payment = PayPal::SDK::REST::Payment.find(params['paymentID'])
     if payment.execute( :payer_id => params['payerID'] )
-      binding.pry
-      # UserMailer.checkout_success(current_user, current_user.cart).deliver
+      begin
+        UserMailer.checkout_success(current_user, current_user.cart).deliver
+      rescue
+        flash[:error] = "Send mail failed"
+      end
       current_user.cart.destroy
       @order = Order.new(user_id: current_user.id, data: payment)
       @order.save
-      render json: {data: payment}
+      render json: { data: payment, status: 'OK'}
     else
-      payment.error # Error Hash
+      binding.pry
+      render json: { messages: payment.error['message'], status: 'FAILED'}
     end
   end
 
@@ -74,6 +78,7 @@ class OrdersController < ApplicationController
 
     def get_shipping_address(id)
       address = Address.get_selected(id)
+      return nil if address.empty?
       country_code = ISO3166::Country.find_country_by_name(address.country_code).alpha2
       return {
         recipient_name: current_user.full_name,
@@ -85,5 +90,11 @@ class OrdersController < ApplicationController
         phone: current_user.phone,
         state: address.try(:state)
       }
+    end
+
+    def empty_cart?
+      if @cart.data.blank?
+        redirect_to root_path
+      end
     end
 end
